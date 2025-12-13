@@ -1,6 +1,7 @@
 package kitae.spring.health.users.entity;
 
 import jakarta.persistence.*;
+import kitae.spring.health.audit.BaseTimeEntity;
 import kitae.spring.health.role.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
