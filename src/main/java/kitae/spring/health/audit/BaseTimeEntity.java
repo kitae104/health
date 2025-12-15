@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class BaseTimeEntity {
   @CreatedDate                        // 최초 생성 시점
   @Column(updatable = false)          // 수정 불가
-  private LocalDateTime createdAt;      // 등록일
+  private LocalDateTime createdAt;    // 등록일
 
   @LastModifiedDate                   // 최종 수정 시점
-  private LocalDateTime updatedAt;      // 수정일
+  private LocalDateTime updatedAt;    // 수정일
 }
