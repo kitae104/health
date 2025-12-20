@@ -1,6 +1,6 @@
 package kitae.spring.health.exceptions;
 
-import kitae.spring.health.res.Response;
+import kitae.spring.health.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
