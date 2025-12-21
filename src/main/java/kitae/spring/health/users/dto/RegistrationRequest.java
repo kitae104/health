@@ -12,20 +12,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegistrationRequest {
 
+    @NotBlank(message = "이름은 필수 항목 입니다.")
+    private String name;    // 이름
 
-    @NotBlank(message = "Name is required")
-    private String name;
+    private Specialization specialization; // 전문 분야(의사인 경우)
 
-    private Specialization specialization; //if users is a doctor specify his specialization
+    private String licenseNumber; // 면허 번호(의사인 경우)
 
-    private String licenseNumber; //if users is a doctor licence number of the doctor
-
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "이메일은 필수 항목 입니다.")
     @Email
-    private String email;
+    private String email;   // 이메일
 
-    private List<String> roles;
+    private List<String> roles; // 역할 목록
 
-    @NotBlank(message = "Password is required")
-    private String password;
+    @NotBlank(message = "비밀번호는 필수 항목 입니다.")
+    private String password; // 비밀번호
 }
