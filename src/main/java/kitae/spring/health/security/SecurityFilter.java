@@ -58,6 +58,7 @@ public class SecurityFilter {
             )
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/auth/**", "/api/doctors/**").permitAll()
+                // .requestMatchers("/api/roles/**").permitAll()
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
                 .anyRequest().authenticated()
             )
