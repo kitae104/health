@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class LoginRequest {
 
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "이메일은 필수 항목 입니다.")
     @Email
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "비밀번호는 필수 항목 입니다.")
     private String password;
 }
