@@ -200,6 +200,42 @@ public class AuthService {
             .build();
     }
 
+    public Response<?> updatePasswordViaResetCode(ResetPasswordRequest resetPasswordRequest) {
+
+        String code = resetPasswordRequest.getCode();
+        String newPassword = resetPasswordRequest.getNewPassword();
+
+        log.info("코드 : " + code);
+        log.info("새 비밀번호: " + newPassword);
+
+        PasswordResetCode resetCode = passwordResetCodeRepository.findByCode(code)
+            .orElseThrow(() -> new BadRequestException("유효한 비밀번호 재설정 코드를 찾을 수 없습니다."));
+
+        // 코드 만료 확인
+        if(resetCode.getExpiryDate().isBefore(LocalDateTime.now())) {
+            passwordResetCodeRepository.delete(resetCode); // 만료된 코드 삭제
+            throw new BadRequestException("비밀번호 재설정 코드가 만료되었습니다.");
+        }
+
+        User user = resetCode.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword)); // 새 비밀번호 암호화 설정
+        userRepository.save(user);
+
+        passwordResetCodeRepository.delete(resetCode); // 사용된 코드 삭제
+
+        // 비밀번호 변경 알림 이메일 전송
+        NotificationDTO passwordResetEmail = NotificationDTO.builder()
+                .recipient(user.getEmail())
+                .subject("Kitae HealthCare에서 비밀번호가 성공적으로 변경되었습니다.")
+                .templateName("password-update-confirmation")
+                .templateVariables(Map.of(
+                        "name", user.getName()
+                ))
+                .build();
+
+        return null;
+    }
+
     private LocalDateTime calculateExpiryDate() {
         return LocalDateTime.now().plusHours(5);    // 5시간 후 만료
     }
