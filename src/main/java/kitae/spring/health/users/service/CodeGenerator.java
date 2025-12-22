@@ -23,14 +23,13 @@ public class CodeGenerator {
         String code;
         do {
             code = generateRandomCode();
-
         } while (passwordResetCodeRepository.findByCode(code).isPresent());
 
         return code;
     }
 
     /**
-     * 랜덤 코드 생성
+     * 랜덤 코드 생성(최대 CODE_LENGTH 자리)
      * @return
      */
     private String generateRandomCode() {
