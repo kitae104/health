@@ -5,6 +5,7 @@ import kitae.spring.health.response.Response;
 import kitae.spring.health.users.dto.LoginRequest;
 import kitae.spring.health.users.dto.LoginResponse;
 import kitae.spring.health.users.dto.RegistrationRequest;
+import kitae.spring.health.users.dto.ResetPasswordRequest;
 import kitae.spring.health.users.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Response<LoginResponse>> login(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Response<?>> forgotPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return ResponseEntity.ok(authService.forgetPassword(resetPasswordRequest.getEmail()));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Response<?>> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest){
+        return ResponseEntity.ok(authService.updatePasswordViaResetCode(resetPasswordRequest));
     }
 }
