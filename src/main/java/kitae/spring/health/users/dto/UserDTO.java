@@ -28,7 +28,7 @@ public class UserDTO {
 
     private String profilePictureUrl;
 
-    @JsonIgnore
+    @JsonIgnore // 비밀번호는 JSON 직렬화/역직렬화에서 무시
     private String password;
 
     private List<Role> roles;
