@@ -233,15 +233,16 @@ public class AuthService {
                 ))
                 .build();
 
-        return null;
+        notificationService.sendEmail(passwordResetEmail, user);    // 이메일 전송
+
+        return Response.builder()
+            .statusCode(200)
+            .message("비밀번호가 성공적으로 변경되었습니다.")
+            .build();
     }
 
     private LocalDateTime calculateExpiryDate() {
         return LocalDateTime.now().plusHours(5);    // 5시간 후 만료
-    }
-
-    public Response<?> updatePasswordViaResetCode(ResetPasswordRequest resetPasswordRequest) {
-        return null;
     }
 
     /**
