@@ -12,6 +12,7 @@ import kitae.spring.health.users.entity.User;
 import kitae.spring.health.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.bytecode.internal.bytebuddy.PassThroughInterceptor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +20,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +38,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final NotificationService notificationService;
 
+    // 파일 업로드 위치 설정
     private final String uploadDir = "uploads/profile-pictures/"; // 백엔드 이미지 저장 위치
-
 //    private final String uploadDir = "/Users/mac/phegonDev/dat-react/public/profile-picture/"; // 프론트엔드 이미지 저장 위치
 
     /**
@@ -151,7 +157,51 @@ public class UserService {
      * @return
      */
     public Response<?> uploadProfilePicture(MultipartFile file) {
-        return null;
+
+        User user = getCurrentUser();
+
+        try {
+            Path uploadPath = Paths.get(uploadDir); // 업로드 디렉토리 경로 설정
+
+            if(!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);    // 디렉토리 없으면 생성
+            }
+
+            if(user.getProfilePictureUrl() != null && !user.getProfilePictureUrl().isEmpty()) {
+                // 기존 프로필 사진 파일 삭제
+                Path oldFile = Paths.get(user.getProfilePictureUrl());
+                if(Files.exists(oldFile)) {
+                    Files.delete(oldFile);  // 기존 파일 삭제
+                }
+            }
+
+            // 충돌 방지를 위해 유일한 파일명으로 저장
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = "";
+            if(originalFilename != null && originalFilename.contains(".")) {
+                fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));  // 파일 확장자 추출
+            }
+
+            String newFileName = UUID.randomUUID()+ fileExtension; // 새로운 파일명 생성
+            Path filePath = uploadPath.resolve(newFileName);    // 업로드 경로에 새로운 파일명 결합
+
+            Files.copy(file.getInputStream(), filePath); // 파일 저장
+
+            String fileUrl = uploadDir + newFileName;
+//            String fileUrl = "/profile-picture/" + newFileName;
+
+            user.setProfilePictureUrl(fileUrl);
+            userRepository.save(user);
+
+            return Response.builder()
+                    .statusCode(200)
+                    .message("프로필 사진 업로드 성공")
+                    .data(fileUrl)
+                    .build();
+
+        } catch(IOException e) {
+            throw new RuntimeException("프로필 사진 업로드에 실패했습니다.\n" + e.getMessage());
+        }
     }
 
     /**
