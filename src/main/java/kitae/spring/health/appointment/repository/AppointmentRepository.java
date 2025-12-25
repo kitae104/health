@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     // 의사 ID로 예약 목록을 내림차순으로 반환하는 메서드
     List<Appointment> findByDoctor_User_IdOrderByIdDesc(Long userId);
