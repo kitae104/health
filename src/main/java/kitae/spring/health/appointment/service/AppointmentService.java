@@ -239,7 +239,7 @@ public class AppointmentService {
         NotificationDTO doctorNotification = NotificationDTO.builder()
                 .recipient(doctorUser.getEmail())
                 .subject("KITAE Health - 예약 취소 알림")
-                .templateName("appointment_cancellation")
+                .templateName("appointment-cancellation")
                 .templateVariables(doctorVars)
                 .build();
 
@@ -253,7 +253,7 @@ public class AppointmentService {
         NotificationDTO patientNotification = NotificationDTO.builder()
                 .recipient(patientUser.getEmail())
                 .subject("KITAE Health - 예약 취소 알림(ID : " + appointment.getId() + ")")
-                .templateName("appointment_cancellation")
+                .templateName("appointment-cancellation")
                 .templateVariables(patientVars)
                 .build();
 
@@ -282,7 +282,7 @@ public class AppointmentService {
         NotificationDTO patientNotification = NotificationDTO.builder()
                 .recipient(patientUser.getEmail())
                 .subject("KITAE Health - 예약 확인 알림")
-                .templateName("appointment-appointment")
+                .templateName("patient-appointment")
                 .templateVariables(patientVars)
                 .build();
 
