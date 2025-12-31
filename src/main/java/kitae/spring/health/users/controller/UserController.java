@@ -6,6 +6,7 @@ import kitae.spring.health.users.dto.UpdatePasswordRequest;
 import kitae.spring.health.users.dto.UserDTO;
 import kitae.spring.health.users.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -43,6 +45,7 @@ public class UserController {
 
     @PutMapping("/profile-picture")
     public ResponseEntity<Response<?>> updateProfilePicture(@RequestParam("file") MultipartFile file) {
+        log.info("================= Received file: {}", file.getOriginalFilename());
         return ResponseEntity.ok(userService.uploadProfilePicture(file));
     }
 }
