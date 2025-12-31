@@ -39,8 +39,8 @@ public class UserService {
     private final NotificationService notificationService;
 
     // 파일 업로드 위치 설정
-    private final String uploadDir = "uploads/profile-pictures/"; // 백엔드 이미지 저장 위치
-//    private final String uploadDir = "/Users/mac/phegonDev/dat-react/public/profile-picture/"; // 프론트엔드 이미지 저장 위치
+//    private final String uploadDir = "uploads/profile-pictures/"; // 백엔드 이미지 저장 위치
+    private final String uploadDir = "D:/Githubs/Spring_React_WS/HealthCare/health-react/public/profile-picture/"; // 프론트엔드 이미지 저장 위치
 
     /**
      * 현재 인증된 사용자 정보 가져오기
@@ -157,7 +157,7 @@ public class UserService {
      * @return
      */
     public Response<?> uploadProfilePicture(MultipartFile file) {
-
+        log.info("============uploadDir: " + uploadDir);
         User user = getCurrentUser();
 
         try {
@@ -187,8 +187,8 @@ public class UserService {
 
             Files.copy(file.getInputStream(), filePath); // 파일 저장
 
-            String fileUrl = uploadDir + newFileName;
-//            String fileUrl = "/profile-picture/" + newFileName;
+//            String fileUrl = uploadDir + newFileName;
+            String fileUrl = "/profile-picture/" + newFileName;
 
             user.setProfilePictureUrl(fileUrl);
             userRepository.save(user);
