@@ -6,6 +6,7 @@ import kitae.spring.health.patient.dto.PatientDTO;
 import kitae.spring.health.patient.service.PatientService;
 import kitae.spring.health.response.Response;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/patients")
 public class PatientController {
 
@@ -63,7 +65,7 @@ public class PatientController {
      * 모든 유전자형 열거형 가져오기
      * @return
      */
-    @GetMapping("/genotype")
+    @GetMapping("/genotypes")
     public ResponseEntity<Response<List<Genotype>>> getAllGenotypeEnums() {
         return ResponseEntity.ok(patientService.getAllGenotypeEnums());
     }
