@@ -67,6 +67,10 @@ public class PatientService {
             patient.setLastName(patientDTO.getLastName());
         }
 
+        if(StringUtils.hasText(patientDTO.getPhone())) {
+            patient.setPhone(patientDTO.getPhone());
+        }
+
         Optional.ofNullable(patientDTO.getDateOfBirth())
                 .ifPresent(patient::setDateOfBirth);
 
