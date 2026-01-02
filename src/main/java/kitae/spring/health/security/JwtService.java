@@ -1,29 +1,30 @@
 package kitae.spring.health.security;
 
+import java.util.Date;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
-import java.time.Duration;
-import java.util.Date;
-import java.util.function.Function;
 
 @Service
 @Slf4j
 public class JwtService {
 
     // application.properties에서 주입받는 만료 시간 (현재 3개월)
-    @Value("${jwt.expiration.time}")
+    @Value("${jwt.expiration.time:7884000000}")
     private long expirationTime;
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:rh/NtQ3vV+DzsGxT7o+7mfK3C6s2cQjZBgkawwr/sHo=}")
     private String jwtSecretBase64;
 
     // HmacSHA256 서명을 만들기 위한 SecretKey 객체
