@@ -1,12 +1,13 @@
 package kitae.spring.health.notification.entity;
 
 import jakarta.persistence.*;
-import kitae.spring.health.audit.BaseTimeEntity;
+import kitae.spring.health.audit.BaseEntity;
 import kitae.spring.health.enums.NotificationType;
 import kitae.spring.health.users.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -14,10 +15,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "notifications")
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notification extends BaseTimeEntity {
+public class Notification extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
