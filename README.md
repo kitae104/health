@@ -1,5 +1,5 @@
-# health
-Health Care 스프링 백엔드
+# TeleMed 헬스케어
+TeleMed 헬스케어 스프링 백엔드
 
 ### API 테스트 시 
 #### Postman
