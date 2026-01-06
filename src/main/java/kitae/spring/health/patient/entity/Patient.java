@@ -2,12 +2,14 @@ package kitae.spring.health.patient.entity;
 
 import jakarta.persistence.*;
 import kitae.spring.health.appointment.entity.Appointment;
+import kitae.spring.health.audit.BaseEntity;
 import kitae.spring.health.enums.BloodGroup;
 import kitae.spring.health.enums.Genotype;
 import kitae.spring.health.users.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -15,11 +17,12 @@ import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "patients")
-public class Patient {
+public class Patient extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

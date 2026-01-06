@@ -2,22 +2,25 @@ package kitae.spring.health.doctor.entity;
 
 import jakarta.persistence.*;
 import kitae.spring.health.appointment.entity.Appointment;
+import kitae.spring.health.audit.BaseEntity;
 import kitae.spring.health.enums.Specialization;
 import kitae.spring.health.users.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "doctors")
-public class Doctor {
+public class Doctor extends BaseEntity{
 
 
     @Id

@@ -2,20 +2,24 @@ package kitae.spring.health.consultation.entity;
 
 import jakarta.persistence.*;
 import kitae.spring.health.appointment.entity.Appointment;
+import kitae.spring.health.audit.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "consultations")
-public class Consultation {
+public class Consultation extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
