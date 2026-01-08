@@ -3,8 +3,12 @@ package kitae.spring.health.security;
 import kitae.spring.health.exceptions.CustomAccessDenialHandler;
 import kitae.spring.health.exceptions.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,12 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityFilter {
+public class SecurityFilter {    
 
     // JWT 인증 필터 (요청마다 토큰 검사 및 SecurityContext 설정)
     private final AuthFilter authFilter;
@@ -39,6 +46,8 @@ public class SecurityFilter {
             "/swagger-ui.html"
     };
 
+  
+
     /**
      * SecurityFilterChain 빈 등록
      * - CSRF 비활성화, CORS 기본설정, 예외 처리 핸들러 등록
@@ -49,15 +58,17 @@ public class SecurityFilter {
      * @return
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, CorsConfigurationSource corsConfigurationSource) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-            .cors(Customizer.withDefaults())
+            // .cors(Customizer.withDefaults())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .exceptionHandling(exception -> exception
                 .accessDeniedHandler(customAccessDenialHandler)
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
             )
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/auth/**", "/api/doctors/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
 //                .requestMatchers("/api/roles/**").permitAll()
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
                 .anyRequest().authenticated()
@@ -88,5 +99,23 @@ public class SecurityFilter {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(List.of(
+            "http://114.71.147.30:*",
+            "http://localhost:*",
+            "http://127.0.0.1:*"
+        ));
+        config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
