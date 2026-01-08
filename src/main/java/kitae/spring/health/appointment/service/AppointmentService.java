@@ -238,7 +238,7 @@ public class AppointmentService {
 
         NotificationDTO doctorNotification = NotificationDTO.builder()
                 .recipient(doctorUser.getEmail())
-                .subject("KITAE Health - 예약 취소 알림")
+                .subject("TeleMed 헬스케어 - 예약 취소 알림")
                 .templateName("appointment-cancellation")
                 .templateVariables(doctorVars)
                 .build();
@@ -252,7 +252,7 @@ public class AppointmentService {
 
         NotificationDTO patientNotification = NotificationDTO.builder()
                 .recipient(patientUser.getEmail())
-                .subject("KITAE Health - 예약 취소 알림(ID : " + appointment.getId() + ")")
+                .subject("TeleMed 헬스케어 - 예약 취소 알림(ID : " + appointment.getId() + ")")
                 .templateName("appointment-cancellation")
                 .templateVariables(patientVars)
                 .build();
@@ -281,7 +281,7 @@ public class AppointmentService {
 
         NotificationDTO patientNotification = NotificationDTO.builder()
                 .recipient(patientUser.getEmail())
-                .subject("KITAE Health - 예약 확인 알림")
+                .subject("TeleMed 헬스케어 - 예약 확인 알림")
                 .templateName("patient-appointment")
                 .templateVariables(patientVars)
                 .build();
@@ -303,7 +303,7 @@ public class AppointmentService {
 
         NotificationDTO doctorNotification = NotificationDTO.builder()
                 .recipient(doctorUser.getEmail())
-                .subject("KITAE Health - 새로운 예약 알림")
+                .subject("TeleMed 헬스케어 - 새로운 예약 알림")
                 .templateName("doctor-appointment")
                 .templateVariables(doctorVars)
                 .build();

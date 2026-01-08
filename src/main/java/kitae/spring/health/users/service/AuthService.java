@@ -184,7 +184,7 @@ public class AuthService {
         // 비밀번호 재설정 이메일 전송
         NotificationDTO passwordResetEmail = NotificationDTO.builder()
             .recipient(user.getEmail())
-            .subject("Kitae HealthCare에서 비밀번호 재설정 요청")
+            .subject("TeleMed 헬스케어에서 비밀번호 재설정 요청")
             .templateName("password-reset")
             .templateVariables(Map.of(
                 "name", user.getName(),
@@ -226,7 +226,7 @@ public class AuthService {
         // 비밀번호 변경 알림 이메일 전송
         NotificationDTO passwordResetEmail = NotificationDTO.builder()
                 .recipient(user.getEmail())
-                .subject("Kitae HealthCare에서 비밀번호가 성공적으로 변경되었습니다.")
+                .subject("TeleMed 헬스케어에서 비밀번호가 성공적으로 변경되었습니다.")
                 .templateName("password-update-confirmation")
                 .templateVariables(Map.of(
                         "name", user.getName()
@@ -283,7 +283,7 @@ public class AuthService {
     private void sendRegistrationEmail(RegistrationRequest request, User user) {
         NotificationDTO welcomeEmail = NotificationDTO.builder()
             .recipient(user.getEmail())
-            .subject("환영합니다, Kitae HealthCare 입니다.")
+            .subject("환영합니다, TeleMed 헬스케어 입니다.")
             .templateName("welcome")
             .message("회원가입해주셔서 감사합니다. 계정이 생성되었습니다.")
             .templateVariables(Map.of(

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Kitae HealthCare</title>
+    <title>TeleMed 헬스케어</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style>
         body { font-family: Inter, Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
@@ -16,7 +16,7 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>Kitae HealthCare에 오신 것을 환영합니다!</h1>
+        <h1>TeleMed 헬스케어에 오신 것을 환영합니다!</h1>
     </div>
     <div class="content">        
         <p>안녕하세요 <strong th:text="${name}"></strong>님,</p>
@@ -26,10 +26,10 @@
             <a th:href="${loginLink}" class="button">로그인하러 가기</a>
         </div>
         <p>저희는 여러분의 건강 관리를 보다 편하게 도와드립니다.</p>
-        <p>My HealthCare 팀 드림</p>
+        <p>TeleMed 헬스케어 팀 드림</p>
     </div>
     <div class="footer">
-        &copy; <span th:text="${T(java.time.Year).now()}">2026</span> Kitae HealthCare. All rights reserved.
+        &copy; <span th:text="${T(java.time.Year).now()}">2026</span> TeleMed 헬스케어.
     </div>
 </div>
 </body>

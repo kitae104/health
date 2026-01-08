@@ -1,4 +1,4 @@
-package kitae.spring.health.audit;
+package kim.kitae.spring.audit;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

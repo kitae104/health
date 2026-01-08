@@ -1,4 +1,4 @@
-package kitae.spring.health.audit;
+package kim.kitae.spring.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

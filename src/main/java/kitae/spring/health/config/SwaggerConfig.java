@@ -34,7 +34,7 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-            .title("Health Care API") // API의 제목
+            .title("TeleMed 헬스케어 API") // API의 제목
             .description("Swagger UI") // API에 대한 설명
             .version("1.0.0"); // API의 버전
     }
