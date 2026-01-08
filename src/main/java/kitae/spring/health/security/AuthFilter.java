@@ -22,59 +22,50 @@ import java.io.IOException;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class AuthFilter  extends OncePerRequestFilter {
+public class AuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomUserDetailsService customUserDetailsService;
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) return true;
+        return path.startsWith("/api/auth/")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-ui");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String token = getTokenFromRequest(request);    // "Bearer " 제거된 토큰
+        String token = getTokenFromRequest(request);
 
-        if(token != null) {
-            String email;
-
+        if (token != null) {
             try {
-                email = jwtService.getUsernameFromToken(token);
+                String email = jwtService.getUsernameFromToken(token);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+
+                if (StringUtils.hasText(email) && jwtService.isTokenValid(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities()
+                            );
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             } catch (Exception e) {
-                log.error("토큰에서 이메일 추출 실패: {}", e.getMessage());
-                AuthenticationException authenticationException = new BadCredentialsException(e.getMessage());
-                customAuthenticationEntryPoint.commence(request, response, authenticationException);
+                log.error("JWT 처리 실패: {}", e.getMessage());
+                AuthenticationException ex = new BadCredentialsException(e.getMessage());
+                customAuthenticationEntryPoint.commence(request, response, ex);
                 return;
             }
-
-            // 이메일로 UserDetails 로드
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-
-            // 이메일이 유효하고 토큰이 유효한 경우 SecurityContext에 인증 정보 설정
-            // - StringUtils.hasText(email): 이메일이 null이거나 빈값인 경우를 방지
-            // - jwtUtils.isTokenValid(...) : 토큰 서명/만료 등 검사
-            if (StringUtils.hasText(email) && jwtService.isTokenValid(token, userDetails)) {
-                log.info("유효한 Token, {}", email);
-
-                // 인증 토큰 생성하여 권한과 함께 SecurityContext에 저장
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken); // 인증 정보 설정
-            }
         }
 
-        // 필터 체인 계속 진행
-        try {
-            filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            // 필터 처리 중 예외 발생 시 로깅 (응답 조작은 하지 않음)
-            log.error("AuthFilter에서 예외 발생: " + e.getMessage());
-        }
+        filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
