@@ -26,15 +26,15 @@ public class AppointmentDTO {
 
     private Long id; // 아이디
 
-    @NotNull(message = "Doctor ID is required for booking.")
+    @NotNull(message = "Doctor ID는 필수 입력 값입니다.")
     private Long doctorId; // 의사 ID
 
     private String purposeOfConsultation;   // 상담 목적
 
     private String initialSymptoms; // 초기 증상 설명
 
-    @NotNull(message = "Start time is required for the appointment.")
-    @Future(message = "Appointment must be scheduled for a future date and time.")
+    @NotNull(message = "예약을 위한 시작 시간은 필수 입력 값입니다.")
+    @Future(message = "예약을 위한 시작 시간은 현재 시간 이후여야 합니다.")
     private LocalDateTime startTime;    // 예약 시작 시간
 
     private LocalDateTime endTime;  // 예약 종료 시간
