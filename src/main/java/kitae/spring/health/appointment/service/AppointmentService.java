@@ -63,7 +63,7 @@ public class AppointmentService {
             throw new BadRequestException("예약은 최소 1시간 이전에 해야 합니다.");
         }
 
-        // 이 코드 스니펫은 새로운 예약 전에 의사에게 1시간의 휴식 시간(또는 버퍼)을 의무적으로 부여하는 로직입니다.
+        // 새로운 예약 전에 의사에게 1시간의 휴식 시간(또는 버퍼)을 의무적으로 부여하는 로직.
         LocalDateTime checkStart = startTime.minusMinutes(60); // 예약 시작 시간 1시간 전
 
         // 기존 예약 중 종료 시간이 제안된 시작 시간과 겹치거나, 시작 시간이 제안된 종료 시간과 겹치는 예약만 확인하면 됩니다.
